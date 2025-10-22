@@ -114,7 +114,7 @@ def get_args_parser():
         Used for small local view cropping of multi-crop.""")
 
     # Misc
-    parser.add_argument('--data_path', default=(f'.../BBBC021_annotated.csv'), type=str,      
+    parser.add_argument('--data_path', default=(f'./BBBC021_annotated.csv'), type=str,      
         help='Please specify path to the ImageNet training data.')
     parser.add_argument('--output_dir', default=".", type=str, help='Path to save logs and checkpoints.')
     parser.add_argument('--saveckp_freq', default=5, type=int, help='Save checkpoint every x epochs.')
@@ -130,7 +130,7 @@ def get_args_parser():
 
 class NaturalImageDataset(Dataset):
     def __init__(self, path10, local_crops_number):
-        
+        print("Preparing NaturalImageDataset...")
         path0 = pd.read_csv(path10)
         
         self.X0 = path0[args.channel_headers[0]]           
@@ -138,14 +138,14 @@ class NaturalImageDataset(Dataset):
         albumentations.HorizontalFlip(p=0.5),
         albumentations.VerticalFlip(p=0.5),
         albumentations.Normalize(mean=[0],std=[1],max_pixel_value=10000, always_apply=True),
-        albumentations.augmentations.crops.transforms.RandomResizedCrop (224, 224, scale=(0.1, 0.2), ratio=(1, 1),interpolation = cv2.INTER_CUBIC, always_apply=True),
+        albumentations.augmentations.crops.transforms.RandomResizedCrop ((224, 224), scale=(0.1, 0.2), ratio=(1, 1),interpolation = cv2.INTER_CUBIC, always_apply=True),
         ],)
         
         self.aug1 = albumentations.Compose([
         albumentations.HorizontalFlip(p=0.5),
         albumentations.VerticalFlip(p=0.5),
         albumentations.Normalize(mean=[0],std=[1],max_pixel_value=10000, always_apply=True),
-        albumentations.augmentations.crops.transforms.RandomResizedCrop (224, 224, scale=(0.1, 0.2), ratio=(1, 1),interpolation = cv2.INTER_CUBIC, always_apply=True),
+        albumentations.augmentations.crops.transforms.RandomResizedCrop ((224, 224), scale=(0.1, 0.2), ratio=(1, 1),interpolation = cv2.INTER_CUBIC, always_apply=True),
         ],)
         
         self.local_crops_number = local_crops_number
@@ -154,7 +154,7 @@ class NaturalImageDataset(Dataset):
         albumentations.HorizontalFlip(p=0.5),
         albumentations.VerticalFlip(p=0.5),
         albumentations.Normalize(mean=[0],std=[1],max_pixel_value=10000, always_apply=True),
-        albumentations.augmentations.crops.transforms.RandomResizedCrop (96, 96, scale=(0.04, 0.08), ratio=(1, 1),interpolation = cv2.INTER_CUBIC, always_apply=True),
+        albumentations.augmentations.crops.transforms.RandomResizedCrop ((96, 96), scale=(0.04, 0.08), ratio=(1, 1),interpolation = cv2.INTER_CUBIC, always_apply=True),
         ],)
         
         

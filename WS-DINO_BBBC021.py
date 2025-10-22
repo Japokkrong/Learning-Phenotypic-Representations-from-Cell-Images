@@ -129,7 +129,9 @@ def get_args_parser():
     parser.add_argument('--weak_label_header', default='Unique_Compounds', type=str) # change weak label here (see .csv headers)
     return parser
 
-df = pd.read_csv('.../BBBC021_annotated.csv')
+# df = pd.read_csv('.../BBBC021_annotated.csv')
+# df = pd.read_csv(args.data_path)
+df = pd.read_csv("./BBBC021_annotated_fixed.csv")
 
 idx_list = []
 weight_list = []
@@ -158,7 +160,7 @@ class NaturalImageDataset(Dataset):
         albumentations.HorizontalFlip(p=0.5),
         albumentations.VerticalFlip(p=0.5),
         albumentations.Normalize(mean=[0],std=[1],max_pixel_value=10000, always_apply=True),
-        albumentations.augmentations.crops.transforms.RandomResizedCrop (224, 224, scale=(0.1, 0.2), ratio=(1, 1),interpolation = cv2.INTER_CUBIC, always_apply=True),
+        albumentations.augmentations.crops.transforms.RandomResizedCrop ((224, 224), scale=(0.1, 0.2), ratio=(1, 1),interpolation = cv2.INTER_CUBIC, always_apply=True),
         ],
         additional_targets={'image1':'image','image2':'image'})
         
@@ -166,7 +168,7 @@ class NaturalImageDataset(Dataset):
         albumentations.HorizontalFlip(p=0.5),
         albumentations.VerticalFlip(p=0.5),
         albumentations.Normalize(mean=[0],std=[1],max_pixel_value=10000, always_apply=True),
-        albumentations.augmentations.crops.transforms.RandomResizedCrop (224, 224, scale=(0.1, 0.2), ratio=(1, 1),interpolation = cv2.INTER_CUBIC, always_apply=True),
+        albumentations.augmentations.crops.transforms.RandomResizedCrop ((224, 224), scale=(0.1, 0.2), ratio=(1, 1),interpolation = cv2.INTER_CUBIC, always_apply=True),
         ],
         additional_targets={'image1':'image','image2':'image'})
         
@@ -176,7 +178,7 @@ class NaturalImageDataset(Dataset):
         albumentations.HorizontalFlip(p=0.5),
         albumentations.VerticalFlip(p=0.5),
         albumentations.Normalize(mean=[0],std=[1],max_pixel_value=10000, always_apply=True),
-        albumentations.augmentations.crops.transforms.RandomResizedCrop (96, 96, scale=(0.04, 0.08), ratio=(1, 1),interpolation = cv2.INTER_CUBIC, always_apply=True),
+        albumentations.augmentations.crops.transforms.RandomResizedCrop ((96, 96), scale=(0.04, 0.08), ratio=(1, 1),interpolation = cv2.INTER_CUBIC, always_apply=True),
         ],
         additional_targets={'image1':'image','image2':'image'})
         

@@ -19,8 +19,8 @@ from sklearn.preprocessing import MultiLabelBinarizer
 mlb = MultiLabelBinarizer()
 from sklearn.decomposition import PCA as sk_PCA
 
-x0train = pd.read_csv(f'.../BBBC021_annotated.csv')
-x0DMSO = pd.read_csv(f'.../BBBC021_DMSO.csv')
+x0train = pd.read_csv(f'./BBBC021_annotated_fixed.csv')
+x0DMSO = pd.read_csv(f'./BBBC021_DMSO_fixed.csv')
 
 num_classes = 12
 
@@ -76,6 +76,7 @@ def extract_feature_pipeline(args, weights,channel):
     print(train_features2.size())
 
     if args.dump_features and dist.get_rank() == 0:
+        print("Saving features to:", args.dump_features)
         torch.save(train_features.cpu(), os.path.join(args.dump_features, f"021_trainfeat.pth"))
         train_features_cpu = train_features.cpu()
         features_np = train_features_cpu.numpy() #convert to Numpy array
@@ -504,12 +505,14 @@ if __name__ == '__main__':
     cudnn.benchmark = True
     
     tally_epoch = []
-    for channel in range(0,2):
-        print(channel)
-        for train_epoch in range(0,100,5):
+    # for channel in range(0,2):
+    for channel in [0]:
+        print("channel:", channel)
+        # for train_epoch in range(0,100,5):
+        for train_epoch in range(0, 35, 5):
             if channel == 0:
-                weights = f'DAPI_weak_compound_DINO_checkpoint00{train_epoch}.pth'
-#                weights = f'DAPI_DINO_checkpoint00{train_epoch}.pth'
+                # weights = f'DAPI_weak_compound_DINO_checkpoint00{train_epoch}.pth'
+               weights = f'./checkpoints/dino_bbbc021_test/DAPI_DINO_checkpoint{train_epoch:04d}.pth'
 #                weights = f'pretrain_full_checkpoint.pth'
             else:
                 if channel == 1:
@@ -521,6 +524,7 @@ if __name__ == '__main__':
 #                    weights = f'Actin_DINO_checkpoint00{train_epoch}.pth'
 #                    weights = f'pretrain_full_checkpoint.pth'
 
+            print("checkpoint path:", weights)
             train_features, DMSO_features = extract_feature_pipeline(args,weights,channel)
             if utils.get_rank() == 0:
                 if args.use_cuda:

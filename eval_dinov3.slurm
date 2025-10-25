@@ -12,16 +12,18 @@
 source ~/miniconda3/etc/profile.d/conda.sh
 conda activate /home/ravipas.aph/warissara/WS-DINO/conda_envs/warissara_wsdino
 
-cd ~/warissara/WS-DINO
+cd ~/warissara/DINOv3
 
-# Run evaluation for DINOv3 checkpoints
-# Note: You need to modify Eval_BBBC021.py line 521 to point to DINOv3 checkpoints
-# weights = f'./checkpoints/dinov3_bbbc021/DAPI_DINOv3_checkpoint{train_epoch:04d}.pth'
+# Create features directory if it doesn't exist
+mkdir -p features_dinov3
 
+# Install timm if not already installed
+pip install timm --quiet
+
+# Run evaluation for DINOv3 checkpoints using the proper DINOv3 model
 MASTER_ADDR=localhost MASTER_PORT=29503 WORLD_SIZE=1 RANK=0 LOCAL_RANK=0 \
-python Eval_BBBC021.py \
-  --arch vit_small_patch16_dinov3 \
-  --patch_size 16 \
+python Eval_DINOv3_BBBC021.py \
+  --arch vit_small_patch16_dinov3.lvd1689m \
   --batch_size_per_gpu 1 \
   --num_workers 1 \
   --checkpoint_key teacher \

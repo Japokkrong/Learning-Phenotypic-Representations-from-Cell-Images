@@ -12,7 +12,7 @@
 source ~/miniconda3/etc/profile.d/conda.sh
 conda activate /home/ravipas.aph/warissara/WS-DINO/conda_envs/warissara_wsdino
 
-cd ~/warissara/WS-DINO
+cd ~/warissara/DINOv3
 
 # Install timm if not already installed
 pip install timm --quiet
@@ -23,8 +23,4 @@ python DINOv3_BBBC021.py \
   --arch vit_small_patch16_dinov3.lvd1689m \
   --data_path BBBC021_annotated_fixed.csv \
   --epochs 200 \
-  --batch_size_per_gpu 16 \
-  --lr 0.000004 \
-  --min_lr 0.000003 \
-  --warmup_epochs 10 \
   --output_dir ./checkpoints/dinov3_bbbc021
